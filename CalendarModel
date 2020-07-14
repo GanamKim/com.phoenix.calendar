@@ -1,0 +1,71 @@
+public class CalendarModel {
+
+	
+	   public static final int NUM_CELL = 37; 
+	   
+	   private CellFace[] cell; 
+	   private GregorianCalendar today;   
+	   private GregorianCalendar calendar;  
+	 
+	   public CalendarModel(){
+	      today = new GregorianCalendar();
+	      calendar = new GregorianCalendar();
+	      cell = new CellFace[NUM_CELL];
+	      goMonth(today.get(today.YEAR), today.get(today.MONTH));
+	   }
+
+	   public CellFace[] contents(){ 
+	      CellFace[] answer = new CellFace[NUM_CELL];
+	      for ( int i = 0;  i < NUM_CELL;  i++ ) 
+	          answer[i] = cell[i]; 
+	      return cell;
+	   }
+	   
+	   //오늘에는 하늘색, 일요일은 빨간색, 토요일은 파란색, 그 외는 검은색 넣기 
+	   public void goMonth(int year, int month){
+	      calendar.set(year, month, 1);
+	      
+	      int day = 1;
+	      for ( int i = 0; i < NUM_CELL; i++ ){ 
+	         if (i >= calendar.get(calendar.DAY_OF_WEEK)-1 
+	        		 && day <= calendar.getActualMaximum(calendar.DAY_OF_MONTH)){
+	        	 
+	            if(today.get(today.MONTH) == calendar.get(calendar.MONTH) &&
+	               today.get(today.YEAR) == calendar.get(Calendar.YEAR) &&
+	               today.get(today.DATE) == day ){   
+	                   cell[i] = new CellFace(new Integer(day).toString(), new Color(80,188,223)); 
+	            }else if (i % 7 == 0){   
+	            	cell[i] = new CellFace(new Integer(day).toString(), Color.red); 
+	            	}else if (i % 7 == 6){   
+	            	   cell[i] = new CellFace(new Integer(day).toString(), Color.blue); 
+	            	   }else {   
+	                	  cell[i] = new CellFace(new Integer(day).toString(), Color.black); }
+	            			day++;
+	         }
+	         else {
+	            cell[i] = new CellFace("", Color.black);  
+	         }
+	       }
+	   }
+
+	   public void prevMonth(){
+	      goMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) - 1);
+	   }
+
+	   public void nextMonth(){
+	      goMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+	   }
+	   
+	   public int getYear(){
+	      return calendar.get(Calendar.YEAR);
+	   }
+
+	   public int getMonth(){
+	      return calendar.get(Calendar.MONTH);
+	   }
+
+	   public Date getDate(int date){
+	      return new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), date);
+	   } 
+}
+
