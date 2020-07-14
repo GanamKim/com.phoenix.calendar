@@ -1,0 +1,22 @@
+package com.phoenix.calendar;
+
+import java.awt.Color;
+
+public class CellFace {
+	
+	   private String face_value;  
+	   private Color face_color;   
+
+	   public CellFace(String value, Color color){ 
+	      face_value = value;
+	      face_color = color;
+	   }
+
+	   public String getValue(){
+	      return face_value; 
+	   }
+
+	   public Color getColor() {
+	      return face_color;
+	   }
+}
