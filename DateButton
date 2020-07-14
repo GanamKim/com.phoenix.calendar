@@ -1,0 +1,27 @@
+
+public class DateButton extends JButton implements ActionListener{
+
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9027260408115463605L;
+	
+	private CalendarModel calendar;
+	  
+	 public DateButton(CalendarModel my_calendar){ 
+	      super(""); 
+	      calendar = my_calendar;
+	      setBackground(Color.white);   
+	      addActionListener(this);
+	   }
+
+	   public void actionPerformed(ActionEvent evt){ 
+	      if ( !getText().equals("") ){ 
+	    	  
+	         Date now = calendar.getDate(new Integer(getText()).intValue());
+	        // new Total(now.getYear()+"년"+(now.getMonth() + 1)+"월"+now.getDate()+"일");
+	         
+	      }
+	   }
+
+}
