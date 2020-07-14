@@ -1,0 +1,24 @@
+
+public class PrevMonthButton extends JButton implements ActionListener{
+
+	   private CalendarModel calendar; 
+	   private UpdateableView view; 
+	   
+	   public PrevMonthButton(String title, 
+			   CalendarModel my_calendar, UpdateableView my_view){   
+	      super(title); 
+	      calendar = my_calendar;
+	      view = my_view;
+	      setForeground(Color.black);   
+	      setBorder(BorderFactory.createRaisedBevelBorder()); 
+	      addActionListener(this);
+	   }
+
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+	      calendar.prevMonth();
+	      view.update();
+	}
+}
