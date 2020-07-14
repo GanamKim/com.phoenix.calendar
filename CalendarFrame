@@ -1,0 +1,319 @@
+package com.phoenix.calendar;
+
+import java.awt.BorderLayout;
+import java.awt.Choice;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+
+import com.phoenix.choice.MainView;
+import com.phoenix.community.CommunityFrame;
+
+public class CalendarFrame extends JFrame implements UpdateableView{
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3722514710215335641L;
+
+	private CalendarModel calendar;
+	
+	private DateButton[] button;
+	
+	private JButton mainButton;
+	private JButton comButton;
+	
+	private JLabel calendarLabel;
+	private JLabel titleLabel;
+	private JTextField yearField;
+	private Choice monthChoice;
+	
+	
+	//////////////////////////////////private JButton btnLogIn = new JButton("로그인"); //로그인 상태 체크 
+	
+	
+	
+	public CalendarFrame(CalendarModel cells){
+		
+		//this.setLayout(new BorderLayout());
+		
+		calendar = cells;
+		
+		//Toolkit theKit = frCalendar.getToolkit();
+		//Dimension wndSize = theKit.getScreenSize();
+		
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		Border border = BorderFactory.createLineBorder(new Color(0.0f,0.0f,0.0f,0.0f));
+		JPanel upperPanel = new JPanel();
+		upperPanel.setBorder(BorderFactory.createRaisedBevelBorder());
+		upperPanel.setLayout(new BorderLayout());
+		
+		
+		JPanel titlePanel1 = new JPanel();
+		titlePanel1.setBorder(border);
+		titlePanel1.setLayout(new BorderLayout());
+		
+		mainButton = new JButton(new ImageIcon("images/btnMain.png"));
+		mainButton.setBorder(border);
+		mainButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				setVisible(false);
+				new MainView();
+			}
+		});
+		titlePanel1.add(mainButton,BorderLayout.WEST);
+		
+		comButton = new JButton(new ImageIcon("images/btnCom.png"));
+		comButton.setBorder(border);
+		comButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				setVisible(false);
+				   
+				 Thread thread1 = new CommunityFrame();
+				 thread1.start();
+				    
+				
+			}
+		});
+		
+		
+		ImageIcon calImg = new ImageIcon("images/calendarLabel.png");
+		calendarLabel=new JLabel(calImg);
+		titlePanel1.add(calendarLabel,BorderLayout.CENTER);
+		
+		//comButton = new JButton(new ImageIcon(""))
+		
+		
+		
+//				//메뉴버튼 만들기
+//				JMenuBar tlbar = new JMenuBar();
+//				JMenuItem previousItem;		
+//				JMenuItem mainTlItem;
+//				JMenuItem communityTlItem;
+//				JMenuItem logoutTlItem;
+//				JMenuItem nextItem;
+//				
+				//큰 메뉴 만들기 
+//				JMenu move = new JMenu("Menu");
+//				tlbar.add(move);
+//				
+//				//작은 메뉴 아이템 만들기 
+//				//1.이전 화면으로 가기 
+//				previousItem =new JMenuItem("Previous");
+//				move.add(previousItem);
+//				previousItem.addMouseListener(new MouseAdapter() {
+//					@Override
+//					public void mouseClicked(MouseEvent e) {
+//						dispose();
+//						setVisible(false);
+//						new MainView();
+//					}
+//				});
+//				move.addSeparator();
+//				
+//				//2. 메인화면으로 가기 
+//				mainTlItem =new JMenuItem("Main");
+//				move.add(mainTlItem);
+//				mainTlItem.addMouseListener(new MouseAdapter() {
+//					@Override
+//					public void mouseClicked(MouseEvent e) {
+//						dispose();
+//						setVisible(false);
+//						new MainView();
+//					}
+//				});
+//				
+//				//3.커뮤니티 화면으로 가기 
+//				communityTlItem =new JMenuItem("Community");
+//				move.add(communityTlItem);
+//				communityTlItem.addMouseListener(new MouseAdapter() {
+//					@Override
+//					public void mouseClicked(MouseEvent e) {
+//						dispose();
+//						setVisible(false);
+//						new CommunityFrame();
+//					}
+//				});
+//				
+////				
+//				move.addSeparator();
+//				
+//				//5.다음 화면으로 가기 (원래 화면으로 돌아가기) 
+//				nextItem =new JMenuItem("Next");
+//				move.add(nextItem);
+//				nextItem.addMouseListener(new MouseAdapter() {
+//					@Override
+//					public void mouseClicked(MouseEvent e) {
+//						dispose();
+//						setVisible(false);
+//						new CommunityFrame();
+//					}
+//					
+//				});
+
+			
+
+				titlePanel1.add(comButton,BorderLayout.EAST);
+				
+		
+		JPanel titlePanel2 = new JPanel(new FlowLayout());
+		
+		titlePanel2.setBorder(border);
+		//titlePanel.setLayout(new BorderLayout());
+		
+		titlePanel2.add(new PrevMonthButton("<",calendar,this));
+		titleLabel = new JLabel();
+		titleLabel.setForeground(Color.black);
+		titleLabel.setFont(titleLabel.getFont().deriveFont(15.0f));
+		titlePanel2.add(titleLabel);
+		titlePanel2.add(new NextMonthButton(">",calendar,this));
+		
+		titlePanel1.setBackground(Color.WHITE);		
+		titlePanel2.setBackground(Color.WHITE);
+
+
+		Border purpleBorder = BorderFactory.createLineBorder(new Color(116,1,113),3);
+		
+		
+		upperPanel.add(titlePanel1,BorderLayout.NORTH);
+		upperPanel.add(titlePanel2,BorderLayout.SOUTH);
+		
+		upperPanel.setBorder(purpleBorder);
+		
+		JPanel datePanel = new JPanel(new GridLayout(7,7));
+		datePanel.setBackground(Color.white);
+		
+		datePanel.setBorder(BorderFactory.createRaisedBevelBorder());
+		
+		JLabel label;
+		datePanel.add(label = new JLabel(" 일요일"));
+		label.setForeground(Color.red);
+		datePanel.add(label = new JLabel(" 월요일"));
+		datePanel.add(label = new JLabel(" 화요일"));
+		datePanel.add(label = new JLabel(" 수요일"));
+		datePanel.add(label = new JLabel(" 목요일"));
+		datePanel.add(label = new JLabel(" 금요일"));
+		datePanel.add(label = new JLabel(" 토요일"));
+		label.setForeground(Color.blue);
+		button = new DateButton[CalendarModel.NUM_CELL];
+		for(int i=0;i<button.length;i++) {
+			button[i]=new DateButton(calendar);
+			datePanel.add(button[i]);
+		}
+		
+		JPanel bottomPanel = new JPanel(new FlowLayout());
+		bottomPanel.setBackground(new Color(221,191,218));
+		JLabel nameLabel = new JLabel("miniProject_Bulsajo");
+		nameLabel.setFont(new Font("20th Century Font",Font.ITALIC,14));
+		
+		bottomPanel.add(nameLabel);
+		yearField = new JTextField("",5);
+		yearField.setBorder(BorderFactory.createLoweredBevelBorder());
+		bottomPanel.add(yearField);
+		bottomPanel.add(new JLabel("/"));
+		monthChoice = new Choice();
+		for(int i=1;i<=12;i++)
+			monthChoice.addItem(String.valueOf(i)+" ");
+		bottomPanel.add(monthChoice);
+		bottomPanel.add(new JLabel(" "));
+		bottomPanel.add(new AcceptButton(" Go ",yearField,monthChoice,calendar,this));
+		
+		//Container mainContent = new Container();
+		
+		//this.setContentPane(MyPanel);
+		
+		
+		
+		//Container content = frCalendar.getContentPane();
+		
+		//JFrame j = getContentPane();
+		
+		
+//		JButton btnThreeLine = new JButton();
+//		URL imageUrl = this.getClass().getResource("menu-2.png");
+//		ImageIcon img = new ImageIcon(imageUrl);
+//		btnThreeLine.setIcon(img);
+
+
+		Container content=getContentPane();
+		
+		content.setLayout(new BorderLayout());
+		content.add(upperPanel,BorderLayout.NORTH);
+		//content.add(tlbar,BorderLayout.EAST);
+		content.add(datePanel,BorderLayout.CENTER);
+		content.add(bottomPanel,BorderLayout.SOUTH);
+		
+		
+		//setContentPane(content);
+		
+		//getContentPane();
+		
+		//add(frCalendar);
+		
+		update();
+		
+		//mainPanel.add(content);
+		//mainContent.add(content);
+		
+		//calendarFrame.add(content);
+		addWindowListener(new ExitController());
+		//this.add(content,BorderLayout.CENTER);
+		//this.add(j,BorderLayout.NORTH);
+		setTitle("On & Off version 1.0");
+		setBounds(100, 100, 1024,720);
+		setVisible(true);
+		
+	}
+	
+	
+	public void update() {
+		CellFace[] cell = calendar.contents();
+		for(int i=0;i<button.length;i++) {
+			button[i].setText(cell[i].getValue());
+			
+			button[i].setForeground(cell[i].getColor());
+			if(button[i].getText().equals(""))
+				button[i].setVisible(false);
+			else
+				button[i].setVisible(true);
+		}
+		
+		int year = calendar.getYear();
+		int month = calendar.getMonth();
+		
+		titleLabel.setText(" "+year+" / "+(month+1)+" ");
+		yearField.setText(new Integer(year).toString());
+		monthChoice.select(month);
+	}
+	
+	
+
+}
